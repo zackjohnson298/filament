@@ -619,7 +619,6 @@ if (WEBGL)
 endif()
 
 if (IS_HOST_PLATFORM)
-    add_subdirectory(${LIBRARIES}/bluegl)
     add_subdirectory(${LIBRARIES}/filamentapp)
     add_subdirectory(${LIBRARIES}/filagui)
     add_subdirectory(${LIBRARIES}/imageio)

@@ -78,6 +78,7 @@ OpenGLContext::OpenGLContext() noexcept {
     } else if (strstr(renderer, "Mozilla")) {
         bugs.disable_invalidate_framebuffer = true;
     }
+    bugs.disable_invalidate_framebuffer = true;
 
     // Figure out if we have the extension we need
     GLint n = 0;

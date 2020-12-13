@@ -300,7 +300,9 @@ constexpr size_t OpenGLContext::getIndexForCap(GLenum cap) noexcept { //NOLINT
         case GL_SAMPLE_ALPHA_TO_COVERAGE:       index =  6; break;
         case GL_SAMPLE_COVERAGE:                index =  7; break;
         case GL_POLYGON_OFFSET_FILL:            index =  8; break;
+#ifdef GL_PRIMITIVE_RESTART_FIXED_INDEX
         case GL_PRIMITIVE_RESTART_FIXED_INDEX:  index =  9; break;
+#endif
         case GL_RASTERIZER_DISCARD:             index = 10; break;
 #ifdef GL_ARB_seamless_cube_map
         case GL_TEXTURE_CUBE_MAP_SEAMLESS:      index = 11; break;

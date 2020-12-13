@@ -8,14 +8,14 @@ set(PUBLIC_HDR_DIR include)
 # Sources and headers
 # ==================================================================================================
 set(PUBLIC_HDRS
-        include/imageio/BlockCompression.h
+        # include/imageio/BlockCompression.h
         include/imageio/ImageDecoder.h
         include/imageio/ImageDiffer.h
         include/imageio/ImageEncoder.h
 )
 
 set(SRCS
-        src/BlockCompression.cpp
+        # src/BlockCompression.cpp
         src/ImageDecoder.cpp
         src/ImageDiffer.cpp
         src/ImageEncoder.cpp
@@ -30,7 +30,7 @@ add_library(${TARGET} STATIC ${PUBLIC_HDRS} ${SRCS})
 
 target_include_directories(${TARGET} PUBLIC ${PUBLIC_HDR_DIR})
 
-target_link_libraries(${TARGET} PUBLIC image math png tinyexr utils z astcenc stb EtcLib)
+target_link_libraries(${TARGET} PUBLIC image math png tinyexr utils z stb)
 if (WIN32)
     target_link_libraries(${TARGET} PRIVATE wsock32)
 endif()
@@ -38,7 +38,7 @@ endif()
 # ==================================================================================================
 # Transitive macro definitions
 # ==================================================================================================
-target_compile_definitions(${TARGET} PUBLIC IMAGEIO_SUPPORTS_BLOCK_COMPRESSION)
+# target_compile_definitions(${TARGET} PUBLIC IMAGEIO_SUPPORTS_BLOCK_COMPRESSION)
 
 # ==================================================================================================
 # Compiler flags

@@ -103,7 +103,9 @@
 #endif
 
 #else
-    #include <bluegl/BlueGL.h>
+        // #include <bluegl/BlueGL.h>
+        #include <OpenGL/gl3.h>
+        #include <OpenGL/gl3ext.h>
 #endif
 
 // This is just to simplify the implementation (i.e. so we don't have to have #ifdefs everywhere)

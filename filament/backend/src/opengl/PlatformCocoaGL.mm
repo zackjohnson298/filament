@@ -71,14 +71,14 @@ Driver* PlatformCocoaGL::createDriver(void* sharedContext) noexcept {
 
     pImpl->mGLContext = nsOpenGLContext;
 
-    int result = bluegl::bind();
-    ASSERT_POSTCONDITION(!result, "Unable to load OpenGL entry points.");
+    // int result = bluegl::bind();
+    // ASSERT_POSTCONDITION(!result, "Unable to load OpenGL entry points.");
     return OpenGLDriverFactory::create(this, sharedContext);
 }
 
 void PlatformCocoaGL::terminate() noexcept {
     pImpl->mGLContext = nil;
-    bluegl::unbind();
+    // bluegl::unbind();
 }
 
 Platform::SwapChain* PlatformCocoaGL::createSwapChain(void* nativewindow, uint64_t& flags) noexcept {

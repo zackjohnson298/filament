@@ -2162,7 +2162,7 @@ void OpenGLDriver::beginRenderPass(Handle<HwRenderTarget> rth,
             std::array<GLenum, 6> attachments; // NOLINT
             GLsizei attachmentCount = getAttachments(attachments, rt, discardFlags);
             if (attachmentCount) {
-                glInvalidateFramebuffer(GL_FRAMEBUFFER, attachmentCount, attachments.data());
+                //glInvalidateFramebuffer(GL_FRAMEBUFFER, attachmentCount, attachments.data());
             }
             CHECK_GL_ERROR(utils::slog.e)
         }
@@ -2232,7 +2232,7 @@ void OpenGLDriver::endRenderPass(int) {
             std::array<GLenum, 6> attachments; // NOLINT
             GLsizei attachmentCount = getAttachments(attachments, rt, discardFlags);
             if (attachmentCount) {
-                glInvalidateFramebuffer(GL_FRAMEBUFFER, attachmentCount, attachments.data());
+                //glInvalidateFramebuffer(GL_FRAMEBUFFER, attachmentCount, attachments.data());
             }
            CHECK_GL_ERROR(utils::slog.e)
         }
