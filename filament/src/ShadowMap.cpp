@@ -385,8 +385,8 @@ void ShadowMap::computeShadowCameraDirectional(
             return;
         }
 
-        assert(lsLightFrustumBounds.min.x < lsLightFrustumBounds.max.x);
-        assert(lsLightFrustumBounds.min.y < lsLightFrustumBounds.max.y);
+        // assert(lsLightFrustumBounds.min.x < lsLightFrustumBounds.max.x);
+        // assert(lsLightFrustumBounds.min.y < lsLightFrustumBounds.max.y);
 
         // compute focus scale and offset
         float2 s = 2.0f / float2(lsLightFrustumBounds.max.xy - lsLightFrustumBounds.min.xy);
