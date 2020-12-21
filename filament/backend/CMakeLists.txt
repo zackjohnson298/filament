@@ -211,7 +211,9 @@ target_link_libraries(${TARGET} PUBLIC utils)
 
 # Android, iOS, and WebGL do not use bluegl.
 if(NOT IOS AND NOT ANDROID AND NOT WEBGL)
-    # target_link_libraries(${TARGET} PRIVATE bluegl)
+if (INCLUDE_BLUEGL)
+    target_link_libraries(${TARGET} PRIVATE bluegl)
+endif()
 endif()
 
 if (FILAMENT_SUPPORTS_VULKAN)
