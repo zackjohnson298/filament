@@ -106,6 +106,9 @@ class App {
         this.renderer = engine.createRenderer();
         this.view = engine.createView();
         this.view.setVignetteOptions({ midPoint: 0.8, enabled: true });
+
+        this.view.setBloomOptions({ enabled: true });
+
         this.view.setCamera(this.camera);
         this.view.setScene(this.scene);
         this.view.setColorGrading(colorGrading);

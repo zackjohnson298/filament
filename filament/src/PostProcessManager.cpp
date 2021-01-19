@@ -1270,6 +1270,7 @@ FrameGraphId<FrameGraphTexture> PostProcessManager::dof(FrameGraph& fg,
     return ppDoFCombine.getData().output;
 }
 
+// prideout
 FrameGraphId<FrameGraphTexture> PostProcessManager::bloomPass(FrameGraph& fg,
         FrameGraphId<FrameGraphTexture> input, TextureFormat outFormat,
         View::BloomOptions& bloomOptions, float2 scale) noexcept {
