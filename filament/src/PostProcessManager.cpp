@@ -1311,7 +1311,9 @@ FrameGraphId<FrameGraphTexture> PostProcessManager::bloomPass(FrameGraph& fg,
     struct BloomPassData {
         FrameGraphId<FrameGraphTexture> in;
         FrameGraphId<FrameGraphTexture> out;
+        FrameGraphId<FrameGraphTexture> stage;
         FrameGraphRenderTargetHandle outRT[kMaxBloomLevels];
+        FrameGraphRenderTargetHandle stageRT[kMaxBloomLevels];
     };
 
     // downsample phase
@@ -1377,7 +1379,7 @@ FrameGraphId<FrameGraphTexture> PostProcessManager::bloomPass(FrameGraph& fg,
 
     input = bloomDownsamplePass.getData().out;
 
-    // upsample phase
+    // Blit and upsample. Since upsampling uses blending, we blit BEFORE doing the upsample.
     auto& bloomUpsamplePass = fg.addPass<BloomPassData>("Bloom Upsample",
             [&](FrameGraph::Builder& builder, auto& data) {
                 data.in = builder.sample(input);
@@ -1387,12 +1389,35 @@ FrameGraphId<FrameGraphTexture> PostProcessManager::bloomPass(FrameGraph& fg,
                     data.outRT[i] = builder.createRenderTarget("Bloom target", {
                             .attachments = {{ data.out, uint8_t(i) }} });
                 }
-            },
-            [=](FrameGraphPassResources const& resources,
-                    auto const& data, DriverApi& driver) {
 
-                auto hwIn = resources.getTexture(data.in);
+                data.stage = builder.createTexture("Bloom Stage Texture", {
+                        .width = width,
+                        .height = height,
+                        .levels = bloomOptions.levels,
+                        .format = outFormat
+                });
+                data.stage = builder.write(builder.sample(data.stage));
+
+                for (size_t i = 0; i < bloomOptions.levels; i++) {
+                    data.stageRT[i] = builder.createRenderTarget("Bloom stage", {
+                            .attachments = {{ data.stage, uint8_t(i) }} });
+                }
+
+            },
+            [=](FrameGraphPassResources const& resources, auto const& data, DriverApi& driver) {
                 auto const& outDesc = resources.getDescriptor(data.out);
+
+                for (size_t i = 0; i < bloomOptions.levels; i++) {
+                    auto out = resources.get(data.outRT[i]);
+                    auto stage = resources.get(data.stageRT[i]);
+                    auto w = FTexture::valueForLevel(i, outDesc.width);
+                    auto h = FTexture::valueForLevel(i, outDesc.height);
+                    filament::Viewport viewport(0, 0, w, h);
+                    driver.blit(TargetBufferFlags::COLOR, stage.target, viewport, out.target,
+                            viewport, SamplerMagFilter::LINEAR);
+                }
+
+                auto hwStage = resources.getTexture(data.stage);
 
                 auto const& material = getPostProcessMaterial("bloomUpsample");
                 FMaterialInstance* mi = material.getMaterialInstance();
@@ -1410,7 +1435,7 @@ FrameGraphId<FrameGraphTexture> PostProcessManager::bloomPass(FrameGraph& fg,
                     auto w = FTexture::valueForLevel(i - 1, outDesc.width);
                     auto h = FTexture::valueForLevel(i - 1, outDesc.height);
                     mi->setParameter("resolution", float4{ w, h, 1.0f / w, 1.0f / h });
-                    mi->setParameter("source", hwIn, {
+                    mi->setParameter("source", hwStage, {
                             .filterMag = SamplerMagFilter::LINEAR,
                             .filterMin = SamplerMinFilter::LINEAR_MIPMAP_NEAREST
                     });
