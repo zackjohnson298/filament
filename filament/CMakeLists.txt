@@ -107,6 +107,7 @@ set(PRIVATE_HDRS
         src/fg/fg/RenderTargetResourceEntry.h
         src/fg/fg/ResourceNode.h
         src/fg/fg/VirtualResource.h
+        src/fg2/FrameGraph.h
         src/details/Allocators.h
         src/details/Camera.h
         src/details/ColorGrading.h
@@ -314,7 +315,6 @@ if (DEFINED RESGEN_SOURCE_FLAGS)
     set_source_files_properties(${RESGEN_SOURCE} PROPERTIES COMPILE_FLAGS ${RESGEN_SOURCE_FLAGS})
 endif()
 
-set(DATA_BINS)
 file(MAKE_DIRECTORY "${GENERATION_ROOT}/generated/data/")
 
 set(output_path "${GENERATION_ROOT}/generated/data/dfg.inc")
